@@ -4,11 +4,12 @@ jQuery(function () {
         bolas.push(i.toString().padStart(2, '0'))
     }
 
+
     $('#btnNovaCartela').on('click', novaCartelaAction)
     $('#btnReset').on('click', reiniciar)
     $('#btnPausar').on('click', pausarAction)
     $('#btnJogar').on('click', jogarAction)
-    $('#btnContinuarJogo').on('click', jogarAction)
+    $('#btnContinuarJogo').on('click', continuarJogoAction)
 });
 
 var jogadores = [];
@@ -25,19 +26,29 @@ function novaCartelaAction(){
 function pausarAction(){
     clearInterval(jogoBotId)
     jogoBotId = undefined
+    $('#ariaAlert').text('jogo pausado')
 }
 
 function jogarAction(){
+    iniciarJogo()
+    $('#ariaAlert').text('jogo iniciado')
+        
+}
+
+function continuarJogoAction(){
+    iniciarJogo()
+    $('#ariaAlert').text('jogo retomado')
+}
+
+function iniciarJogo(){
+    if(jogoBotId) return
     $('#btnPausar').css('display', 'inline-block')
     $('#btnJogar').css('display', 'none')
     $('#btnContinuarJogo').css('display', 'inline-block')
-    if(jogoBotId == undefined)
-        $('#ariaAlert').text('jogo iniciado')
-    else
-        $('#ariaAlert').text('jogo retomado')
+    
 
     setTimeout(sortearNovoNumero, 0)
-    jogoBotId = setInterval(sortearNovoNumero, 5000)
+    jogoBotId = setInterval(sortearNovoNumero, 3000)
 }
 
 function sortearNovoNumero(){
@@ -104,7 +115,7 @@ function reiniciar() {
     $('#btnJogar').css('display', 'inline-block')
     $('#btnContinuarJogo').css('display', 'none')
     $('#btnJogar').removeAttr('disabled');
-    $('#ariaAlert').text('jogo pausado')
+    $('#ariaAlert').text('jogo reiniciado')
     
     jogadores = []
     numJogados = []
@@ -117,16 +128,20 @@ function reiniciar() {
     updateListaDeCartelas();
     updateNumJogados();
     clearInterval(jogoBotId)
+    jogoBotId = undefined
 }
 
 function updateListaDeCartelas() {
     $('#cartelaList').empty();
-    jogadores.forEach(jogador => {
-        let cartela = montarCartela(jogador.nome, jogador.numeros);
+    if(jogadores.length > 0)
+        jogadores.forEach(jogador => {
+            let cartela = montarCartela(jogador.nome, jogador.numeros);
+            
+            cartela.appendTo('#cartelaList')
 
-        cartela.appendTo('#cartelaList')
-
-    });
+        });
+    else 
+        $('#cartelaList').text('nenhuma cartela disponivel')
 }
 
 function gerarAriaLabelCartela(nome, numeros, numMarcados) {
@@ -175,7 +190,18 @@ function montarCartela(nome, numeros) {
         for (x = 0; x < 5; x++) {
             coluna = $('<td />')
             coluna.text(celulas[x * 5 + y])
-            coluna.css('background-color', numJogados.includes(celulas[x * 5 + y]) ? 'lightgreen': 'white')
+            coluna.attr('aria-label', celulas[x * 5 + y] + (numJogados.includes(celulas[x * 5 + y]) ? ' marcado' : ''))
+
+            if(numJogados.includes(celulas[x * 5 + y])){
+                let marcacao = $('<i />', {
+                    class: 'fa-solid fa-x'
+                })
+                marcacao.attr('role', 'figure')
+                marcacao.attr('title', 'marcado')
+                marcacao.removeAttr('aria-hidden')
+                marcacao.appendTo(coluna)
+            }
+
             coluna.appendTo(linha)
         }
         linha.appendTo(tabela)

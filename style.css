@@ -80,6 +80,13 @@ div#numJogados {
     gap: 0.5rem;
 }
 
+td i {
+    position: absolute;
+    top: 0;
+    left: 0.2rem;
+    font-size: 200%;
+}
+
 div#numJogados div {
     display: flex;
     justify-content: center;
@@ -120,4 +127,5 @@ div#numJogados div {
 
 .cartela td {
     border: 0.1rem solid black;
+    position: relative
 }
