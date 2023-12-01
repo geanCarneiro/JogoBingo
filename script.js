@@ -1,10 +1,5 @@
 jQuery(function () {
 
-    novaCartela('Gean')
-    novaCartela('Sâmela')
-    novaCartela('Alam')
-    novaCartela('Kell')
-
     for(i = 1; i < 76; i++){
         bolas.push(i.toString().padStart(2, '0'))
     }
