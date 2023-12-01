@@ -2,6 +2,10 @@
 <head>
     <title>Jogo de Bingo</title>
     <link rel="Stylesheet" href="style.css" />
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </head>
 <body>
@@ -10,16 +14,19 @@
             <div id="gameControl">
                 <input id="btnNovaCartela" type="button" value="Nova Cartela"  />
                 <input id="btnReset" type="button" value="Reiniciar"  />
+                <input id="btnPausar" type="button" value="Pausar" />
                 <input id="btnJogar" type="button" value="Jogar"  />
+                <input id="btnContinuarJogo" type="button" value="Continuar Jogo"  />
             </div>
             <div id="cartelaList">
 
             </div>
         </div>
         <div id="jogo">
-            <h2>Jogo</h2>
+            <h1>Jogo</h1>
             <div id="numJogados"></div>
         </div>
+        <div id="ariaAlert" aria-live="assertive" tabindex="-1"></div>
     </div>
 </body>
 </html>
