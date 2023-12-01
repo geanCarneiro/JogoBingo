@@ -4,40 +4,51 @@ jQuery(function () {
         bolas.push(i.toString().padStart(2, '0'))
     }
 
-
     $('#btnNovaCartela').on('click', novaCartelaAction)
     $('#btnReset').on('click', reiniciar)
     $('#btnPausar').on('click', pausarAction)
     $('#btnJogar').on('click', jogarAction)
     $('#btnContinuarJogo').on('click', continuarJogoAction)
+
+    updateButtons()
 });
 
 var jogadores = [];
 var numJogados = [];
 var bolas = []
 var jogoBotId;
+var section;
+
+function updateButtons(){
+    $('#btnPausar').attr('disabled', !jogoBotId)
+    $('#btnJogar').attr('disabled', jogadores.length == 0)
+    $('#btnContinuarJogo').attr('disabled', !!jogoBotId)
+}
 
 function novaCartelaAction(){
     let nome = prompt("Qual o nome do Jogador?");
     
     novaCartela(nome)
+    updateButtons()
 }
 
 function pausarAction(){
     clearInterval(jogoBotId)
     jogoBotId = undefined
     $('#ariaAlert').text('jogo pausado')
+    updateButtons()
 }
 
 function jogarAction(){
     iniciarJogo()
     $('#ariaAlert').text('jogo iniciado')
-        
+    updateButtons()
 }
 
 function continuarJogoAction(){
     iniciarJogo()
     $('#ariaAlert').text('jogo retomado')
+    updateButtons()
 }
 
 function iniciarJogo(){
@@ -67,6 +78,7 @@ function sortearNovoNumero(){
     if(vencedor != null){
         setTimeout(function () {
             clearInterval(jogoBotId)
+            jogoBotId = undefined
             alert(vencedor.nome + " ganhou o jogo!!!")
             
             $('#btnPausar').attr('disabled', 'true');
@@ -85,10 +97,11 @@ function checkVencedor(){
 
 function updateNumJogados(){
     $('#numJogados').empty();
+    $('div#numJogados').css('display', 'grid')
 
     numJogados.forEach(num => {
         
-        $('<div />', {
+        $('<p />', {
             text: num
         }).appendTo('#numJogados');
 
@@ -127,6 +140,7 @@ function reiniciar() {
     
     updateListaDeCartelas();
     updateNumJogados();
+    updateButtons()
     clearInterval(jogoBotId)
     jogoBotId = undefined
 }
@@ -141,7 +155,10 @@ function updateListaDeCartelas() {
 
         });
     else 
-        $('#cartelaList').text('nenhuma cartela disponivel')
+        $('<p />', {
+            text: 'Nenhuma cartela disponível. inclua pelo menos uma para poder iniciar o jogo'
+        }).appendTo('#cartelaList')
+    
 }
 
 function gerarAriaLabelCartela(nome, numeros, numMarcados) {
@@ -175,7 +192,6 @@ function montarCartela(nome, numeros) {
 
     var linha = $('<tr />');
     linha.css('border', '0.1rem solid black');
-    linha.attr('aria-hidden', 'true');
     
     $('<th />',{ text: 'B'}).appendTo(linha)
     $('<th />',{ text: 'I'}).appendTo(linha)

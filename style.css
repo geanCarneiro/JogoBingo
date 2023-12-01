@@ -74,10 +74,15 @@ div#numJogados {
     flex-grow: 1;
     border-top: 0.1rem solid black;
     padding: 0.5rem;
-    display: grid;
+    display: block;
+    overflow-y: auto;
     grid-template-columns: repeat(auto-fill, 1.5rem);
     grid-template-rows: repeat(auto-fill, 1.5rem);
     gap: 0.5rem;
+}
+
+div#numJogados > section > p {
+    margin-top: 0.3rem;
 }
 
 td i {
@@ -87,7 +92,7 @@ td i {
     font-size: 200%;
 }
 
-div#numJogados div {
+div#numJogados > p {
     display: flex;
     justify-content: center;
     align-items: center;
