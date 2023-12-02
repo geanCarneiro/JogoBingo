@@ -102,6 +102,7 @@ td i {
 }
 
 div#numJogados > p {
+    /* display inline garante que o leitor de tela vai ler uma bola por vez em vez de ler todas as bolas de uma vez só */
     display: inline; 
     padding-top: calc(50% - 0.5rem);
     text-align: center;

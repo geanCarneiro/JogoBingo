@@ -218,15 +218,14 @@ function montarCartela(nome, numeros) {
         for (x = 0; x < 5; x++) {
             coluna = $('<td />')
             coluna.text(celulas[x * 5 + y])
-            coluna.attr('aria-label', celulas[x * 5 + y] + (numJogados.includes(celulas[x * 5 + y]) ? ' marcado' : ''))
 
             if(numJogados.includes(celulas[x * 5 + y])){
                 let marcacao = $('<i />', {
                     class: 'fa-solid fa-x'
                 })
-                marcacao.attr('role', 'figure')
+                // os icones do font-awsome vem escondido do leitor, a maneira como faz para o leitor ler esse elemento
+                // de forma diferente é alterando o atributo title que é lido pelo leitor de tela
                 marcacao.attr('title', 'marcado')
-                marcacao.removeAttr('aria-hidden')
                 marcacao.appendTo(coluna)
             }
 
