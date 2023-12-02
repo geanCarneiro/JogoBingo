@@ -1,8 +1,16 @@
 jQuery(function () {
 
+    novaCartela('Gean')
+    novaCartela('Samela')
+
     for(i = 1; i < 76; i++){
         bolas.push(i.toString().padStart(2, '0'))
     }
+
+    for(i = 0; i < bolas.length; i++){
+        numJogados.push(bolas[i])
+    }
+    updateNumJogados()
 
     $('#btnNovaCartela').on('click', novaCartelaAction)
     $('#btnReset').on('click', reiniciar)
@@ -11,6 +19,7 @@ jQuery(function () {
     $('#btnContinuarJogo').on('click', continuarJogoAction)
 
     updateButtons()
+    notificar('Bem vindo ao jogo do bingo!')
 });
 
 var jogadores = [];
@@ -21,7 +30,7 @@ var section;
 
 function updateButtons(){
     $('#btnPausar').attr('disabled', !jogoBotId)
-    $('#btnJogar').attr('disabled', jogadores.length == 0)
+    $('#btnJogar').attr('disabled', jogadores.length < 2)
     $('#btnContinuarJogo').attr('disabled', !!jogoBotId)
 }
 
@@ -35,19 +44,19 @@ function novaCartelaAction(){
 function pausarAction(){
     clearInterval(jogoBotId)
     jogoBotId = undefined
-    $('#ariaAlert').text('jogo pausado')
+    notificar('jogo pausado')
     updateButtons()
 }
 
 function jogarAction(){
     iniciarJogo()
-    $('#ariaAlert').text('jogo iniciado')
+    notificar('jogo iniciado')
     updateButtons()
 }
 
 function continuarJogoAction(){
     iniciarJogo()
-    $('#ariaAlert').text('jogo retomado')
+    notificar('jogo retomado')
     updateButtons()
 }
 
@@ -72,7 +81,7 @@ function sortearNovoNumero(){
 
     updateNumJogados()
     updateListaDeCartelas()
-    $('#ariaAlert').text('bola ' + novoNum)
+    notificar('bola ' + novoNum)
 
     let vencedor = checkVencedor();
     if(vencedor != null){
@@ -121,6 +130,10 @@ function novaCartela(nome){
     updateListaDeCartelas();
 }
 
+function notificar(msg){
+    $('#notificacao').text(msg)
+}
+
 function reiniciar() {
     
     $('#btnPausar').css('display', 'none')
@@ -128,7 +141,8 @@ function reiniciar() {
     $('#btnJogar').css('display', 'inline-block')
     $('#btnContinuarJogo').css('display', 'none')
     $('#btnJogar').removeAttr('disabled');
-    $('#ariaAlert').text('jogo reiniciado')
+
+    notificar('jogo reiniciado')
     
     jogadores = []
     numJogados = []
@@ -147,22 +161,29 @@ function reiniciar() {
 
 function updateListaDeCartelas() {
     $('#cartelaList').empty();
-    if(jogadores.length > 0)
+    if(jogadores.length > 0) {
+        if(jogadores.length == 1){
+            $('#cartelas p').empty()
+            $('<p />', {
+                text: 'Quantidade de cartelas insuficiente, favor incluir pelo menos mais uma cartela para jogar'
+            }).appendTo('#cartelas p')
+        } else {
+            $('#cartelas p').css('display', 'none')
+        }
         jogadores.forEach(jogador => {
             let cartela = montarCartela(jogador.nome, jogador.numeros);
             
             cartela.appendTo('#cartelaList')
 
         });
-    else 
+    } else
         $('<p />', {
-            text: 'Nenhuma cartela disponível. inclua pelo menos uma para poder iniciar o jogo'
-        }).appendTo('#cartelaList')
+            text: 'Nenhuma cartela disponível. inclua pelo menos 2 para poder iniciar o jogo'
+        }).appendTo('#cartelas p')
     
 }
 
 function gerarAriaLabelCartela(nome, numeros, numMarcados) {
-    let numerosNMarcados = numeros.filter(num => !numMarcados.includes(num))
 
     let ariaLabel = 'cartela ' + nome
         + ', ' + numMarcados.length + ' de ' + numeros.length + ' números marcados'
@@ -181,8 +202,7 @@ function montarCartela(nome, numeros) {
 
 
     let cartelaInfo = $('<div />', {class: 'cartelaInfo'})
-    cartelaInfo.attr('tabindex', 0)
-    $('<b />', { text: nome }).appendTo(cartelaInfo);
+    $('<h3 />', { text: nome }).appendTo(cartelaInfo);
     $('<b />', { 
         text: '( ' + numMarcados.length + '/' + numeros.length + ' )' 
     }).appendTo(cartelaInfo)

@@ -11,6 +11,9 @@
 </head>
 <body>
     <div id="app">
+        <header>
+            <h1>BINGO - O JOGO</h1>
+        </header>
         <div id="cartelas">
             <div id="gameControl">
                 <input id="btnNovaCartela" type="button" value="Nova Cartela"  />
@@ -19,17 +22,17 @@
                 <input id="btnJogar" type="button" value="Jogar"  />
                 <input id="btnContinuarJogo" type="button" value="Continuar Jogo"  />
             </div>
-            <div id="cartelaList">
-                <p>Nenhuma cartela disponível. inclua pelo menos uma para poder iniciar o jogo</p>
-            </div>
+            <h2>CARTELAS</h2>
+            <div id="info"><p>Nenhuma cartela disponível. inclua pelo menos 2 para poder iniciar o jogo</p></div>
+            <div id="cartelaList"></div>
         </div>
         <div id="jogo">
-            <h1>Números Jogados</h1>
+            <h2>Números Jogados</h2>
             <div id="numJogados">
                 <section>
                     <p>Bem vindo ao jogo de bingo automatico.
                          Não será preciso marcar nenhum numero, o jogo já marca para você. </p>
-                    <h2>Como Jogar:</h2>
+                    <h3>Como Jogar:</h3>
                     <ul>
                         <li><b>Crie uma cartela:</b> é nescessario criar pelo menos uma cartela para jogar.
                             podem ser adicionados quantas cartelas desejar e novas cartelas podem ser criada
@@ -43,7 +46,9 @@
                 </section>
             </div>
         </div>
-        <div id="ariaAlert" aria-live="assertive" tabindex="-1"></div>
+        <footer id="notificacao" aria-live="assertive">
+            
+        </footer>
     </div>
 </body>
 </html>
