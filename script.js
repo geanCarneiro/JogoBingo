@@ -1,16 +1,8 @@
 jQuery(function () {
 
-    novaCartela('Gean')
-    novaCartela('Samela')
-
     for(i = 1; i < 76; i++){
         bolas.push(i.toString().padStart(2, '0'))
     }
-
-    for(i = 0; i < bolas.length; i++){
-        numJogados.push(bolas[i])
-    }
-    updateNumJogados()
 
     $('#btnNovaCartela').on('click', novaCartelaAction)
     $('#btnReset').on('click', reiniciar)
